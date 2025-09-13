@@ -1,0 +1,17 @@
+{
+  "name": "gas-station-dashboard",
+  "version": "1.0.0",
+  "description": "SaaS dashboard for gas station pricing and metrics",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000",
+    "start": "live-server --port=3000"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["gas-station", "dashboard", "saas", "metrics"],
+  "author": "",
+  "license": "MIT"
+}

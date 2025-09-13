@@ -1,0 +1,385 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    max-width: 414px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #000000;
+    position: relative;
+}
+
+.header {
+    padding: 60px 24px 20px 24px;
+    text-align: center;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+.date {
+    font-size: 16px;
+    color: #8e8e93;
+    font-weight: 400;
+}
+
+.main-content {
+    padding: 0 24px;
+}
+
+/* Weekly Overview Rings */
+.weekly-overview {
+    margin-bottom: 40px;
+}
+
+.week-rings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.ring-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.ring-day.current {
+    opacity: 1;
+}
+
+.ring-day::after {
+    content: attr(data-day);
+    font-size: 12px;
+    color: #8e8e93;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.mini-ring {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #ff6b6b 0deg,
+        #4CAF50 120deg,
+        #2196F3 240deg,
+        #ff6b6b 360deg
+    );
+    position: relative;
+    padding: 3px;
+    animation: ringPulse 2s ease-in-out infinite;
+}
+
+.mini-ring::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    background: #000000;
+    border-radius: 50%;
+}
+
+/* Main Activity Rings */
+.activity-rings {
+    position: relative;
+    margin: 40px auto;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rings-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-ring {
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+.rings-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.center-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Metrics List */
+.metrics-list {
+    margin-bottom: 40px;
+}
+
+.metric-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    font-size: 14px;
+}
+
+.metric-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-label {
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.metric-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.metric-unit {
+    font-size: 14px;
+    color: #8e8e93;
+    margin-top: 2px;
+}
+
+.metric-progress {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8e8e93;
+}
+
+/* Goals Section */
+.goals-section {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.collapse-btn {
+    background: none;
+    border: none;
+    color: #007AFF;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.goals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.goal-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.goal-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.goal-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.goal-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.goal-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.goal-label {
+    font-size: 12px;
+    color: #8e8e93;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.goal-progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #4CAF50);
+    border-radius: 2px;
+    transition: width 1s ease;
+}
+
+.goal-percentage {
+    font-size: 14px;
+    color: #8e8e93;
+    font-weight: 600;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0 40px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 40px;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+/* Animations */
+@keyframes ringPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 414px) {
+    .dashboard-container {
+        max-width: 100vw;
+    }
+
+    .header {
+        padding: 50px 16px 20px 16px;
+    }
+
+    .main-content {
+        padding: 0 16px;
+    }
+
+    .activity-rings {
+        width: 260px;
+        height: 260px;
+    }
+}
+
+/* Dark mode enhancements */
+.metric-item {
+    transition: background 0.2s ease;
+}
+
+.metric-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    margin: 0 -8px;
+    padding: 16px 8px;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .progress-ring,
+    .goal-progress-fill,
+    .mini-ring,
+    .center-icon {
+        animation: none;
+        transition: none;
+    }
+}
