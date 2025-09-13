@@ -2,10 +2,14 @@
   "name": "gas-station-dashboard",
   "version": "1.0.0",
   "description": "SaaS dashboard for gas station pricing and metrics",
-  "main": "index.html",
+  "main": "frontend/index.html",
   "scripts": {
-    "dev": "live-server --port=3000",
-    "start": "live-server --port=3000"
+    "dev:frontend": "cd frontend && live-server --port=3000",
+    "dev:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && live-server --port=3000",
+    "start:backend": "cd backend && npm start",
+    "install:backend": "cd backend && npm install",
+    "install:all": "npm run install:backend"
   },
   "dependencies": {},
   "devDependencies": {

@@ -124,12 +124,13 @@ class FitnessCardFactory {
 class GasStationDashboard {
     constructor() {
         this.cards = [];
+        this.apiBaseUrl = 'http://localhost:3001/api';
         this.init();
     }
 
-    init() {
+    async init() {
         this.setCurrentDate();
-        this.createFitnessCards();
+        await this.loadCardsFromAPI();
         this.renderCards();
         this.animateAllCards();
     }
@@ -148,8 +149,33 @@ class GasStationDashboard {
         }
     }
 
-    createFitnessCards() {
-        // Create different card variations
+    async loadCardsFromAPI() {
+        try {
+            console.log('🔄 Loading cards from API...');
+            const response = await fetch(`${this.apiBaseUrl}/cards`);
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success && result.data) {
+                this.cards = result.data.map(cardData => new AppleFitnessCard(cardData));
+                console.log('✅ Cards loaded from API:', this.cards.length);
+            } else {
+                throw new Error('Invalid API response format');
+            }
+        } catch (error) {
+            console.error('❌ Failed to load cards from API:', error);
+            // Fallback to static cards
+            console.log('🔄 Using fallback static cards...');
+            this.createFallbackCards();
+        }
+    }
+
+    createFallbackCards() {
+        // Fallback cards if API is not available
         this.cards = [
             FitnessCardFactory.createActiveCaloriesCard(494, 73),
             FitnessCardFactory.createExerciseMinutesCard(23, 26),
@@ -204,6 +230,40 @@ class GasStationDashboard {
             }
         }
     }
+
+    // Method to update card via API
+    async updateCardViaAPI(cardId, updates) {
+        try {
+            console.log(`🔄 Updating card ${cardId} via API...`);
+            const response = await fetch(`${this.apiBaseUrl}/cards/${cardId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updates)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Update the local card
+                this.updateCard(cardId, updates);
+                console.log('✅ Card updated via API:', result.data);
+                return result.data;
+            } else {
+                throw new Error('API update failed');
+            }
+        } catch (error) {
+            console.error('❌ Failed to update card via API:', error);
+            // Still update locally as fallback
+            this.updateCard(cardId, updates);
+            throw error;
+        }
+    }
 }
 
 // Initialize dashboard when DOM is loaded
@@ -218,9 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add some console logging for demo
     console.log('🎯 Apple Fitness Card Component System initialized');
     console.log('📊 Available cards:', dashboard.cards.length);
+    console.log('🔌 API Base URL:', dashboard.apiBaseUrl);
     console.log('');
     console.log('💡 Try these commands:');
-    console.log('dashboard.updateCard("active-calories-card", {value: 550, percentage: 82})');
+    console.log('dashboard.updateCard("active-calories-card", {value: 550, percentage: 82})  // Local update');
+    console.log('dashboard.updateCardViaAPI("active-calories-card", {value: 600, percentage: 90})  // API update');
     console.log('dashboard.addCustomCard({value: "12", label: "Custom<br>Metric", icon: "⭐", percentage: 45, backgroundColor: "#ffe6cc", iconBackgroundColor: "rgba(255, 193, 7, 0.3)"})');
     console.log('FitnessCardFactory.createCustomCard({value: "999", label: "Test<br>Card", icon: "🎉", percentage: 100, backgroundColor: "#e6f3ff", iconBackgroundColor: "rgba(0, 123, 255, 0.2)"})');
 });
